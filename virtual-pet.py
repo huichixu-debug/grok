@@ -36,13 +36,14 @@ while True:
   if accelerometer.was_gesture('shake'):
     display.show(ANIMATION, wait=False, loop=True)
   if button_a.was_pressed() and button_b.was_pressed():
-    music.play(random.choice.GAMES, wait=False, loop=True)
-  if button_a.was_pressed and button_b.was_not_pressed ():
+    display.show(Image.HAPPY)
+    music.play(random.choice(GAMES), wait=False, loop=True)
+  elif button_a.was_pressed() and not button_b.was_pressed():
     display.show(FISH)
     music.play(music.BA_DING, wait=False, loop=False)
     sleep(1000)
     display.clear()
-  if button_b.was_pressed and button_a.was_not_pressed ():
+  elif button_b.was_pressed() and not button_a.was_pressed():
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
     display.show(Image.MUSIC_QUAVER)
     sleep(5000)
