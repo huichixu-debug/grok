@@ -32,6 +32,8 @@ MUSIC_BOX = [MUSIC1, MUSIC2, MUSIC3]
 
 a_poop = False
 b_poop = False
+a_played = False
+b_played = False
 
 while True:
   if button_a.is_pressed():
@@ -47,17 +49,21 @@ while True:
     display.clear()
     a_poop = False
     b_poop = False
-  elif a_poop and not b_poop:
+    a_played = False
+    b_played = False
+  elif a_poop and not b_poop and not a_played:
     display.show(FISH)
     music.play(music.BA_DING, wait=False, loop=False)
+    a_played = True
     sleep(2000)
     while button_a.is_pressed():
       sleep(20)
     display.clear()
     
-  elif b_poop and not a_poop:
+  elif b_poop and not a_poop and not b_played:
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
     display.show(Image.MUSIC_QUAVER)
+    b_played = True
     sleep(2000)
     while button_b.is_pressed():
       sleep(20)
