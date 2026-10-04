@@ -39,16 +39,17 @@ while True:
   if button_b.is_pressed():
     b_poop = True
   if a_poop and b_poop:
-      display.show(Image.HAPPY)
-      music.play(CIRCUS, wait=False, loop=True)
-      while button_a.is_pressed() or button_b.is_pressed():
-        sleep(20)
-        a_poop = False
-        b_poop = False
+    display.show(Image.HAPPY)
+    music.play(CIRCUS, wait=False, loop=True)
+    while button_a.is_pressed() or button_b.is_pressed():
+      sleep(20)
+    display.clear()
+    a_poop = False
+    b_poop = False
   elif a_poop and not b_poop:
     display.show(FISH)
     music.play(music.BA_DING, wait=False, loop=False)
-    sleep(1000)
+    sleep(2000)
     while button_a.is_pressed():
       sleep(20)
     display.clear()
@@ -56,11 +57,12 @@ while True:
   elif b_poop and not a_poop:
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
     display.show(Image.MUSIC_QUAVER)
-    sleep(5000)
+    sleep(2000)
     while button_b.is_pressed():
       sleep(20)
     display.clear()
     b_poop = False
+  sleep(20)
 
       
       
