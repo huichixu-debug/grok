@@ -43,6 +43,7 @@ while True:
     music.play(CIRCUS, wait=False, loop=True)
     while button_a.is_pressed() or button_b.is_pressed():
       sleep(20)
+    sleep(5000)
     display.clear()
     a_poop = False
     b_poop = False
@@ -53,7 +54,7 @@ while True:
     while button_a.is_pressed():
       sleep(20)
     display.clear()
-    a_poop = False
+    
   elif b_poop and not a_poop:
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
     display.show(Image.MUSIC_QUAVER)
@@ -61,7 +62,6 @@ while True:
     while button_b.is_pressed():
       sleep(20)
     display.clear()
-    b_poop = False
   sleep(20)
 
       
