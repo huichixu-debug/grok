@@ -30,46 +30,26 @@ ANIMATION = (ALIEN, JUMP_ALIEN)
 
 MUSIC_BOX = [MUSIC1, MUSIC2, MUSIC3]
 
-a_poop = False
-b_poop = False
-a_played = False
-b_played = False
+last_a = 0
+last_b = 0
 
 while True:
-  if button_a.is_pressed():
-    a_poop = True
-  if button_b.is_pressed():
-    b_poop = True
-  if a_poop and b_poop:
+  if accelerometer.was_gesture('shake'):
+    display.show(ANIMATION, wait=False, loop=True)
+    last_a = running_time()
+    last_b = running_time()
+  if abs(last_a - last_b) < 1000 and abs(last_a - last_b) != 0:
     display.show(Image.HAPPY)
     music.play(CIRCUS, wait=False, loop=True)
-    while button_a.is_pressed() or button_b.is_pressed():
-      sleep(20)
-    sleep(5000)
-    display.clear()
-    a_poop = False
-    b_poop = False
-    a_played = False
-    b_played = False
-  elif a_poop and not b_poop and not a_played:
+  elif button_a.is_pressed() and not button_b.is_pressed():
     display.show(FISH)
     music.play(music.BA_DING, wait=False, loop=False)
-    a_played = True
-    sleep(2000)
-    while button_a.is_pressed():
-      sleep(20)
-    display.clear()
-    
-  elif b_poop and not a_poop and not b_played:
+    sleep(500)
+  elif button_b.is_pressed() and not button_a.is_pressed():
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
     display.show(Image.MUSIC_QUAVER)
-    b_played = True
-    sleep(2000)
-    while button_b.is_pressed():
-      sleep(20)
-    display.clear()
-  sleep(20)
-
+    sleep(5000)
+    
       
       
  
