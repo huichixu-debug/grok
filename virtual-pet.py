@@ -24,6 +24,40 @@ CIRCUS = [
   'E6:3', 'D#6:1', 'E6:3', 'G6:6', 'C6:4', 'E6:3', 'D#6:1', 'E6:3', 'G6:10', 'D6:3', 'C#6:1', 'D6:3', 'F6:6', 'B5:4', 'D6:3', 'C#6:1', 'D6:3', 'F6:10'
 ]
 
+
+#define minigames
+def snake():
+  x = 0
+  y = 0
+  display.set_pixel(x, y, 9)
+  if x == 4 and y == 4:
+      display.clear()
+      x = 0
+      y = 0
+  if button_a.was_pressed() and x < 4:
+      x += 1
+  if button_b.was_pressed() and y < 4:
+      y += 1
+def reaction():
+  a = 0
+  b = 0
+  wait_a = False
+  while True:
+      if button_a.was_pressed():
+        wait_a = True
+        wait = 3000
+        display.show(Image.TARGET)
+        music.play('C6:4', wait=False, loop=False)
+        a = running_time()
+      if button_b.was_pressed() and wait_a == True:
+        b = running_time()
+        time = b - a
+        display.scroll(time)
+
+    
+MOON = Image('00990:09900:09000:09900:00990')
+STAR = Image('00900:09990:99999:09990:00900')
+
 #define images
 ALIEN = Image('00000:09090:99999:09990:09090')
 JUMP_ALIEN = Image('09090:99999:09990:09090:00000')
@@ -32,23 +66,20 @@ FISH = Image('00900:09909:99999:09909:00900')
 #animation loop
 ANIMATION = (ALIEN, JUMP_ALIEN)
 
-#random commands for music
+#random commands 
 MUSIC_BOX = [MUSIC1, MUSIC2, MUSIC3]
+GAMES = [snake, reaction]
+DREAM = [MOON, STAR, Image.GHOST]
 
-#represents when a and b were last pressed
-last_a = 0
-last_b = 0
-
+#start code
 while True:
   #show animation on shake
   if accelerometer.was_gesture('shake'):
     display.show(ANIMATION, wait=False, loop=True)
-    last_a = running_time()
-    last_b = running_time()
-  #play circus tune if a and b are pressed within 1 sec from each other
-  if abs(last_a - last_b) < 1000 and abs(last_a - last_b) != 0:
-    display.show(Image.HAPPY)
-    music.play(CIRCUS, wait=False, loop=True)
+  #button a and b to play minigames
+  if button_a.was_pressed() and button_b.was_pressed():
+    music.play(CIRCUS, wait=True, loop=True)
+    random.choice(GAMES)()
   #button a to feed pet  
   elif button_a.is_pressed() and not button_b.is_pressed():
     display.show(FISH)
@@ -59,6 +90,10 @@ while True:
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
     display.show(Image.MUSIC_QUAVER)
     sleep(5000)
+  else:
+    number = random.randint(1, 3)
+    if number == 1:
+      display.show(random.choice(DREAM))
     
       
       
