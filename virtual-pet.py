@@ -21,38 +21,51 @@ MUSIC3 = [
 ]
 
 CIRCUS = [
+  'E6:3', 'D#6:1', 'E6:3', 'G6:6', 'C6:4', 'E6:3', 'D#6:1', 'E6:3', 'G6:10', 'D6:3', 'C#6:1', 'D6:3', 'F6:6', 'B5:4', 'D6:3', 'C#6:1', 'D6:3', 'F6:10', 
+  'E6:3', 'D#6:1', 'E6:3', 'G6:6', 'C6:4', 'E6:3', 'D#6:1', 'E6:3', 'G6:10', 'D6:3', 'C#6:1', 'D6:3', 'F6:6', 'B5:4', 'D6:3', 'C#6:1', 'D6:3', 'F6:10', 
   'E6:3', 'D#6:1', 'E6:3', 'G6:6', 'C6:4', 'E6:3', 'D#6:1', 'E6:3', 'G6:10', 'D6:3', 'C#6:1', 'D6:3', 'F6:6', 'B5:4', 'D6:3', 'C#6:1', 'D6:3', 'F6:10'
 ]
 
 
 #define minigames
 def snake():
+  display.scroll('snake!')
   x = 0
   y = 0
-  display.set_pixel(x, y, 9)
-  if x == 4 and y == 4:
-      display.clear()
-      x = 0
-      y = 0
-  if button_a.was_pressed() and x < 4:
-      x += 1
-  if button_b.was_pressed() and y < 4:
-      y += 1
+  display.clear()
+  while True:
+     if x == 4 and y == 4:
+        music.play(music.POWER_UP, wait=True, loop=False)
+        display.clear()
+        break
+     if button_a.was_pressed() and x < 4:
+       x += 1
+     if button_b.was_pressed() and y < 4:
+       y += 1
+     display.clear()
+     display.set_pixel(x, y, 9)
+     sleep(100)
+
+
 def reaction():
+  display.scroll('reaction!')
+  display.scroll(str(3))
+  display.scroll(str(2))
+  display.scroll(str(1))
   a = 0
   b = 0
   wait_a = False
   while True:
       if button_a.was_pressed():
-        wait_a = True
-        wait = 3000
+        sleep(3000)
         display.show(Image.TARGET)
         music.play('C6:4', wait=False, loop=False)
+        wait_a = True
         a = running_time()
       if button_b.was_pressed() and wait_a == True:
-        b = running_time()
-        time = b - a
-        display.scroll(time)
+        time = running_time() - a
+        display.scroll(str(time))
+        break
 
     
 MOON = Image('00990:09900:09000:09900:00990')
@@ -76,10 +89,16 @@ while True:
   #show animation on shake
   if accelerometer.was_gesture('shake'):
     display.show(ANIMATION, wait=False, loop=True)
+    if button_a.is_pressed() and button_b.is_pressed():
+      display.clear()
+      break
+    else: 
+      display.show(ANIMATION, wait=False, loop=True)      
   #button a and b to play minigames
-  if button_a.was_pressed() and button_b.was_pressed():
+  if button_a.is_pressed() and button_b.is_pressed():
     music.play(CIRCUS, wait=True, loop=True)
     random.choice(GAMES)()
+    music.stop()
   #button a to feed pet  
   elif button_a.is_pressed() and not button_b.is_pressed():
     display.show(FISH)
@@ -94,6 +113,10 @@ while True:
     number = random.randint(1, 3)
     if number == 1:
       display.show(random.choice(DREAM))
+      sleep(2000)
+      display.clear()
+    else:
+      display.clear()
     
       
       
