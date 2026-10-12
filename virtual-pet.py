@@ -84,40 +84,48 @@ MUSIC_BOX = [MUSIC1, MUSIC2, MUSIC3]
 GAMES = [snake, reaction]
 DREAM = [MOON, STAR, Image.GHOST]
 
+#virtual pet game is closed
+opened = False
+
 #start code
 while True:
-  #show animation on shake
-  if accelerometer.was_gesture('shake'):
-    display.show(ANIMATION, wait=False, loop=True)
-    if button_a.is_pressed() and button_b.is_pressed():
+  if opened == False:
+    if accelerometer.was_gesture('shake'):
+      display.show(ANIMATION, wait=False, loop=True)
+    if button_a.is_pressed() and button_b.is_pressed() or button_a.is_pressed() or button_b.is_pressed():
       display.clear()
-      break
-    else: 
-      display.show(ANIMATION, wait=False, loop=True)      
-  #button a and b to play minigames
-  if button_a.is_pressed() and button_b.is_pressed():
-    music.play(CIRCUS, wait=True, loop=True)
-    random.choice(GAMES)()
-    music.stop()
-  #button a to feed pet  
-  elif button_a.is_pressed() and not button_b.is_pressed():
-    display.show(FISH)
-    music.play(music.BA_DING, wait=False, loop=False)
-    sleep(500)
-  #button b to play music
-  elif button_b.is_pressed() and not button_a.is_pressed():
-    music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
-    display.show(Image.MUSIC_QUAVER)
-    sleep(5000)
-  else:
-    number = random.randint(1, 3)
-    if number == 1:
-      display.show(random.choice(DREAM))
-      sleep(2000)
-      display.clear()
+      opened = True  
     else:
       display.clear()
+  if opened == True: 
+      if button_a.is_pressed() and button_b.is_pressed():
+         music.play(CIRCUS, wait=True, loop=False)
+         random.choice(GAMES)()
+         music.stop()
+  #button a to feed pet  
+      elif button_a.is_pressed() and not button_b.is_pressed():
+        display.show(FISH)
+        music.play(music.BA_DING, wait=False, loop=False)
+        sleep(500)
+  #button b to play music
+      elif button_b.is_pressed() and not button_a.is_pressed():
+        music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
+        display.show(Image.MUSIC_QUAVER)
+        sleep(5000)
+      else:
+        number = random.randint(1, 3)
+        if number == 1:
+          display.show(random.choice(DREAM))
+          sleep(2000)
+          display.clear()
+        else:
+          display.clear()
     
+    
+
       
       
  
+
+        
+   
