@@ -34,17 +34,19 @@ def snake():
   y = 0
   display.clear()
   while True:
-     if x == 4 and y == 4:
+    if x == 4 and y == 4:
         music.play(music.POWER_UP, wait=True, loop=False)
         display.clear()
         break
-     if button_a.was_pressed() and x < 4:
-       x += 1
-     if button_b.was_pressed() and y < 4:
-       y += 1
-     display.clear()
-     display.set_pixel(x, y, 9)
-     sleep(100)
+    elif button_a.was_pressed() and x < 4:
+      x += 1
+      display.set_pixel(x, y, 9)
+    elif button_b.was_pressed() and y < 4:
+      y += 1
+      display.set_pixel(x, y, 9)
+    else:
+      display.set_pixel(x, y, 9)
+      sleep(100)
 
 
 def reaction():
@@ -52,25 +54,23 @@ def reaction():
   display.scroll(str(3))
   display.scroll(str(2))
   display.scroll(str(1))
+  display.scroll('GO!')
   a = 0
   b = 0
   wait_a = False
   while True:
-      if button_a.was_pressed():
-        sleep(3000)
-        display.show(Image.TARGET)
-        music.play('C6:4', wait=False, loop=False)
-        wait_a = True
-        a = running_time()
-      if button_b.was_pressed() and wait_a == True:
-        time = running_time() - a
-        display.scroll(str(time))
-        break
-
-    
-MOON = Image('00990:09900:09000:09900:00990')
-STAR = Image('00900:09990:99999:09990:00900')
-
+    sleep(3000)
+    display.show(Image.TARGET)
+    wait_a = True
+    a = running_time()
+    if button_b.was_pressed() and wait_a == True:
+      b_pressed = running_time()
+      time = running_time() - b_pressed
+      display.scroll(str(time))
+    if not button_a.was_pressed() and not button_b.was_pressed():
+      display.scroll('you lost')
+      break
+      
 #define images
 ALIEN = Image('00000:09090:99999:09990:09090')
 JUMP_ALIEN = Image('09090:99999:09990:09090:00000')
@@ -82,50 +82,36 @@ ANIMATION = (ALIEN, JUMP_ALIEN)
 #random commands 
 MUSIC_BOX = [MUSIC1, MUSIC2, MUSIC3]
 GAMES = [snake, reaction]
-DREAM = [MOON, STAR, Image.GHOST]
-
-#virtual pet game is closed
-opened = False
 
 #start code
 while True:
-  if opened == False:
-    if accelerometer.was_gesture('shake'):
-      display.show(ANIMATION, wait=False, loop=True)
-    if button_a.is_pressed() and button_b.is_pressed() or button_a.is_pressed() or button_b.is_pressed():
+  #show animation on shake
+  if accelerometer.was_gesture('shake'):
+    display.show(ANIMATION, wait=False, loop=True) 
+    if button_a.is_pressed() and button_b.is_pressed(): #clear when a button is pressed
       display.clear()
-      opened = True  
-    else:
-      display.clear()
-  if opened == True: 
-      if button_a.is_pressed() and button_b.is_pressed():
-         music.play(CIRCUS, wait=True, loop=False)
-         random.choice(GAMES)()
-         music.stop()
+      break #break out of loop
+    else: 
+      display.show(ANIMATION, wait=False, loop=True)      
+  #button a and b to play minigames
+  if button_a.was_pressed() and button_b.was_pressed():
+    music.play(CIRCUS, wait=False, loop=False) 
+    random.choice(GAMES)()
+    music.stop()
   #button a to feed pet  
-      elif button_a.is_pressed() and not button_b.is_pressed():
-        display.show(FISH)
-        music.play(music.BA_DING, wait=False, loop=False)
-        sleep(500)
+  elif button_a.is_pressed() and not button_b.is_pressed(): 
+    display.show(FISH)
+    music.play(music.BA_DING, wait=False, loop=False) #do not block other commands  
+    sleep(500) 
   #button b to play music
-      elif button_b.is_pressed() and not button_a.is_pressed():
-        music.play(random.choice(MUSIC_BOX), wait=False, loop=False)
-        display.show(Image.MUSIC_QUAVER)
-        sleep(5000)
-      else:
-        number = random.randint(1, 3)
-        if number == 1:
-          display.show(random.choice(DREAM))
-          sleep(2000)
-          display.clear()
-        else:
-          display.clear()
+  elif button_b.is_pressed() and not button_a.is_pressed():
+    music.play(random.choice(MUSIC_BOX), wait=False, loop=False) 
+    display.show(Image.MUSIC_QUAVER)
+    sleep(5000)
+  
     
+      
     
-
       
       
  
-
-        
-   
