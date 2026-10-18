@@ -48,28 +48,26 @@ def snake():
       display.set_pixel(x, y, 9)
       sleep(100)
 
+#face
+def happy():
+  display.show(Image.HAPPY)
+  music.play(music.POWER_UP)
+  sleep(3000)
+  display.clear()
+def sad():
+  display.show(Image.SAD)
+  music.play(music.WAWAWAWAA)
+  sleep(3000)
+  display.clear()
+  
+FACE = [happy, sad]
 
-def reaction():
-  display.scroll('reaction!')
-  display.scroll(str(3))
-  display.scroll(str(2))
-  display.scroll(str(1))
-  display.scroll('GO!')
-  a = 0
-  b = 0
-  wait_a = False
+def faces():
   while True:
-    sleep(3000)
-    display.show(Image.TARGET)
-    wait_a = True
-    a = running_time()
-    if button_b.was_pressed() and wait_a == True:
-      b_pressed = running_time()
-      time = running_time() - b_pressed
-      display.scroll(str(time))
-    if not button_a.was_pressed() and not button_b.was_pressed():
-      display.scroll('you lost')
-      break
+    display.scroll('faces!')
+    sleep(1000)
+    random.choice(FACE)()
+    break
       
 #define images
 ALIEN = Image('00000:09090:99999:09990:09090')
@@ -81,7 +79,7 @@ ANIMATION = (ALIEN, JUMP_ALIEN)
 
 #random commands 
 MUSIC_BOX = [MUSIC1, MUSIC2, MUSIC3]
-GAMES = [snake, reaction]
+GAMES = [snake, faces]
 
 #start code
 while True:
@@ -103,6 +101,7 @@ while True:
     display.show(FISH)
     music.play(music.BA_DING, wait=False, loop=False) #do not block other commands  
     sleep(500) 
+    display.clear()
   #button b to play music
   elif button_b.is_pressed() and not button_a.is_pressed():
     music.play(random.choice(MUSIC_BOX), wait=False, loop=False) 
